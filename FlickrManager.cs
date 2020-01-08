@@ -19,10 +19,10 @@ namespace FlickrMetadataDL
 
         public Flickr GetFlickrInstance()
         {
-            return new Flickr(Settings.ApiKey, Settings.ApiSecret);
+            return new Flickr(FlickrKey.Key, FlickrKey.Secret);
         }
 
-        // Returns an authenticated instance based on the login user. 
+        // Returns an authenticated instance based on the login user.
         public Flickr GetFlickrAuthInstance()
         {
             string name = Settings.FlickrLoginAccountName;
@@ -38,7 +38,7 @@ namespace FlickrMetadataDL
             }
         }
 
-        // Returns an authenticated instance based on user. If the user is not 
+        // Returns an authenticated instance based on user. If the user is not
         // authenticated (Public), returns a non-authenticated instance.
         public Flickr GetFlickrAuthInstance(User user)
         {

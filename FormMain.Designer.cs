@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,13 +44,6 @@
             this.cbSearchAccount = new System.Windows.Forms.ComboBox();
             this.btnGetAlbums = new System.Windows.Forms.Button();
             this.dgvPhotosets = new System.Windows.Forms.DataGridView();
-            this.EnableSearch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.titleDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numberOfPhotosDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.photosetIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bindingSourcePhotosets = new System.Windows.Forms.BindingSource(this.components);
             this.chkSearchAllPhotos = new System.Windows.Forms.CheckBox();
             this.chkFilterDate = new System.Windows.Forms.CheckBox();
             this.titleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -72,6 +66,12 @@
             this.photosetTitleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.photoIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.photosetIdDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bindingSourcePhotosets = new System.Windows.Forms.BindingSource(this.components);
+            this.EnableSearch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.titleDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numberOfPhotosDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPhotosets)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourcePhotosets)).BeginInit();
@@ -99,7 +99,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -209,68 +209,15 @@
             this.dgvPhotosets.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.EnableSearch,
             this.titleDataGridViewTextBoxColumn1,
-            this.descriptionDataGridViewTextBoxColumn1,
             this.numberOfPhotosDataGridViewTextBoxColumn,
             this.DateCreated,
-            this.photosetIdDataGridViewTextBoxColumn});
+            this.descriptionDataGridViewTextBoxColumn1});
             this.dgvPhotosets.DataSource = this.bindingSourcePhotosets;
             this.dgvPhotosets.Location = new System.Drawing.Point(10, 126);
             this.dgvPhotosets.Name = "dgvPhotosets";
             this.dgvPhotosets.RowHeadersVisible = false;
             this.dgvPhotosets.Size = new System.Drawing.Size(662, 181);
             this.dgvPhotosets.TabIndex = 12;
-            // 
-            // EnableSearch
-            // 
-            this.EnableSearch.DataPropertyName = "EnableSearch";
-            this.EnableSearch.HeaderText = "";
-            this.EnableSearch.MinimumWidth = 18;
-            this.EnableSearch.Name = "EnableSearch";
-            this.EnableSearch.Width = 18;
-            // 
-            // titleDataGridViewTextBoxColumn1
-            // 
-            this.titleDataGridViewTextBoxColumn1.DataPropertyName = "Title";
-            this.titleDataGridViewTextBoxColumn1.HeaderText = "Title";
-            this.titleDataGridViewTextBoxColumn1.Name = "titleDataGridViewTextBoxColumn1";
-            this.titleDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.titleDataGridViewTextBoxColumn1.Width = 52;
-            // 
-            // descriptionDataGridViewTextBoxColumn1
-            // 
-            this.descriptionDataGridViewTextBoxColumn1.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
-            this.descriptionDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.descriptionDataGridViewTextBoxColumn1.Width = 85;
-            // 
-            // numberOfPhotosDataGridViewTextBoxColumn
-            // 
-            this.numberOfPhotosDataGridViewTextBoxColumn.DataPropertyName = "NumberOfPhotos";
-            this.numberOfPhotosDataGridViewTextBoxColumn.HeaderText = "Count";
-            this.numberOfPhotosDataGridViewTextBoxColumn.Name = "numberOfPhotosDataGridViewTextBoxColumn";
-            this.numberOfPhotosDataGridViewTextBoxColumn.ReadOnly = true;
-            this.numberOfPhotosDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // DateCreated
-            // 
-            this.DateCreated.DataPropertyName = "DateCreated";
-            this.DateCreated.HeaderText = "Date Created";
-            this.DateCreated.Name = "DateCreated";
-            this.DateCreated.ReadOnly = true;
-            this.DateCreated.Width = 95;
-            // 
-            // photosetIdDataGridViewTextBoxColumn
-            // 
-            this.photosetIdDataGridViewTextBoxColumn.DataPropertyName = "PhotosetId";
-            this.photosetIdDataGridViewTextBoxColumn.HeaderText = "PhotosetId";
-            this.photosetIdDataGridViewTextBoxColumn.Name = "photosetIdDataGridViewTextBoxColumn";
-            this.photosetIdDataGridViewTextBoxColumn.ReadOnly = true;
-            this.photosetIdDataGridViewTextBoxColumn.Width = 83;
-            // 
-            // bindingSourcePhotosets
-            // 
-            this.bindingSourcePhotosets.DataSource = typeof(FlickrMetadataDL.Photoset);
             // 
             // chkSearchAllPhotos
             // 
@@ -471,6 +418,52 @@
             this.photosetIdDataGridViewTextBoxColumn1.ReadOnly = true;
             this.photosetIdDataGridViewTextBoxColumn1.Width = 75;
             // 
+            // bindingSourcePhotosets
+            // 
+            this.bindingSourcePhotosets.DataSource = typeof(FlickrMetadataDL.Photoset);
+            // 
+            // EnableSearch
+            // 
+            this.EnableSearch.DataPropertyName = "EnableSearch";
+            this.EnableSearch.HeaderText = "";
+            this.EnableSearch.MinimumWidth = 18;
+            this.EnableSearch.Name = "EnableSearch";
+            this.EnableSearch.Width = 18;
+            // 
+            // titleDataGridViewTextBoxColumn1
+            // 
+            this.titleDataGridViewTextBoxColumn1.DataPropertyName = "Title";
+            this.titleDataGridViewTextBoxColumn1.HeaderText = "Title";
+            this.titleDataGridViewTextBoxColumn1.Name = "titleDataGridViewTextBoxColumn1";
+            this.titleDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.titleDataGridViewTextBoxColumn1.Width = 52;
+            // 
+            // numberOfPhotosDataGridViewTextBoxColumn
+            // 
+            this.numberOfPhotosDataGridViewTextBoxColumn.DataPropertyName = "NumberOfPhotos";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.numberOfPhotosDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.numberOfPhotosDataGridViewTextBoxColumn.HeaderText = "Count";
+            this.numberOfPhotosDataGridViewTextBoxColumn.Name = "numberOfPhotosDataGridViewTextBoxColumn";
+            this.numberOfPhotosDataGridViewTextBoxColumn.ReadOnly = true;
+            this.numberOfPhotosDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // DateCreated
+            // 
+            this.DateCreated.DataPropertyName = "DateCreated";
+            this.DateCreated.HeaderText = "Date Created";
+            this.DateCreated.Name = "DateCreated";
+            this.DateCreated.ReadOnly = true;
+            this.DateCreated.Width = 95;
+            // 
+            // descriptionDataGridViewTextBoxColumn1
+            // 
+            this.descriptionDataGridViewTextBoxColumn1.DataPropertyName = "Description";
+            this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
+            this.descriptionDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.descriptionDataGridViewTextBoxColumn1.Width = 85;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -532,12 +525,6 @@
         private System.Windows.Forms.BindingSource bindingSourcePhotosets;
         private System.Windows.Forms.CheckBox chkSearchAllPhotos;
         private System.Windows.Forms.CheckBox chkFilterDate;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableSearch;
-        private System.Windows.Forms.DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfPhotosDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateCreated;
-        private System.Windows.Forms.DataGridViewTextBoxColumn photosetIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dateTakenDataGridViewTextBoxColumn;
@@ -558,6 +545,11 @@
         private System.Windows.Forms.TextBox txtOutputFile;
         private System.Windows.Forms.Button btnBrowseOutputFile;
         private System.Windows.Forms.CheckBox chkFindAllAlbums;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn EnableSearch;
+        private System.Windows.Forms.DataGridViewTextBoxColumn titleDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfPhotosDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateCreated;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn1;
     }
 }
 

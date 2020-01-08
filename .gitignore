@@ -1,12 +1,8 @@
 # My local ignores
 
-# ignore backup and temp files
+FlickrKey.cs
+Doc/ReleaseProcedure.txt
 *.bak
-
-# Ignore internal documentation
-Doc/
-
-# Ignore test data
 TestData/
 
 ------------------------------

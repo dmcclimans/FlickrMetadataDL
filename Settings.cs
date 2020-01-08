@@ -43,33 +43,7 @@ namespace FlickrMetadataDL
         private const string SettingsFilename = "FlickrMetadataDLSettings.xml";
         private const string DefaultSettingsFolder = "FlickrMetadataDL";
 
-        // ApiKey and ApiSecret are associated with this app at Flickr. We authenticate
-        // using them to identify the app.
-        public const string ApiKey = "8dd63fa013b351f20b2f52619a92cf82";
-        public const string ApiSecret = "7f25853f97a29fae";
-
         // Properties that are serialized, and trigger the PropertyChanged events.
-
-        private int amTwilightStartOffsetValue = 0;
-        public int AMTwilightStartOffset
-        {
-            get { return amTwilightStartOffsetValue; }
-            set { SetProperty(ref amTwilightStartOffsetValue, value, true); }
-        }
-
-        private int amTwilightStopOffsetValue = 0;
-        public int AMTwilightStopOffset
-        {
-            get { return amTwilightStopOffsetValue; }
-            set { SetProperty(ref amTwilightStopOffsetValue, value, true); }
-        }
-
-        private string fileCreationValue = "";
-        public string FileCreation
-        {
-            get { return fileCreationValue; }
-            set { SetProperty(ref fileCreationValue, value, true); }
-        }
 
         private bool filterByDateValue = false;
         public bool FilterByDate
@@ -156,39 +130,11 @@ namespace FlickrMetadataDL
             set { SetProperty(ref formMainSizeValue, value, true); }
         }
 
-        private Point formOptionsLocationValue;
-        public Point FormOptionsLocation
-        {
-            get { return formOptionsLocationValue; }
-            set { SetProperty(ref formOptionsLocationValue, value, true); }
-        }
-
-        private Point formSaveLocationValue;
-        public Point FormSaveLocation
-        {
-            get { return formSaveLocationValue; }
-            set { SetProperty(ref formSaveLocationValue, value, true); }
-        }
-
         private string outputFilenameValue = "";
         public string OutputFilename
         {
             get { return outputFilenameValue; }
             set { SetProperty(ref outputFilenameValue, value, true); }
-        }
-
-        private int pmTwilightStartOffsetValue = 0;
-        public int PMTwilightStartOffset
-        {
-            get { return pmTwilightStartOffsetValue; }
-            set { SetProperty(ref pmTwilightStartOffsetValue, value, true); }
-        }
-
-        private int pmTwilightStopOffsetValue = 0;
-        public int PMTwilightStopOffset
-        {
-            get { return pmTwilightStopOffsetValue; }
-            set { SetProperty(ref pmTwilightStopOffsetValue, value, true); }
         }
 
         private bool searchAllPhotosValue = false;
@@ -495,7 +441,7 @@ namespace FlickrMetadataDL
                 {
                     // Found matching name, replace it
                     FlickrSearchAccountList[index] = newUser;
-                    break;          
+                    break;
                 }
                 else if (compare > 0)
                 {

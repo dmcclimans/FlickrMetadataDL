@@ -356,13 +356,13 @@ namespace FlickrMetadataDL
                 return;
             }
 
-            int page = 1;
-            int perPage = 500;
-            FlickrNet.PhotosetCollection photoSets = new FlickrNet.PhotosetCollection();
-            FlickrNet.PhotoSearchExtras PhotosetExtras = 0;
-            do
+            try
             {
-                try
+                int page = 1;
+                int perPage = 500;
+                FlickrNet.PhotosetCollection photoSets = new FlickrNet.PhotosetCollection();
+                FlickrNet.PhotoSearchExtras PhotosetExtras = 0;
+                do
                 {
                     photoSets = f.PhotosetsGetList(SearchAccountUser.UserId, page, perPage, PhotosetExtras);
                     foreach (FlickrNet.Photoset ps in photoSets)
@@ -373,14 +373,13 @@ namespace FlickrMetadataDL
                     }
                     page = photoSets.Page + 1;
                 }
-                catch (FlickrNet.FlickrException ex)
-                {
-                    SearchErrorMessage = "Album search failed. Error: " + ex.Message;
-                    return;
-                }
-
+                while (page <= photoSets.Pages);
             }
-            while (page <= photoSets.Pages);
+            catch (FlickrNet.FlickrException ex)
+            {
+                SearchErrorMessage = "Album search failed. Error: " + ex.Message;
+                return;
+            }
         }
 
         // Background thread to search for photos
@@ -553,43 +552,28 @@ namespace FlickrMetadataDL
 
             try
             {
-                SearchUser(worker, SearchAccountUser, connection);
-            }
-            catch (FlickrNet.FlickrException ex)
-            {
-                SearchErrorMessage = "Search failed. Error: " + ex.Message;
-                return;
-            }
-        }
+                FlickrNet.Flickr f = FlickrManager.GetFlickrAuthInstance();
 
-        private void SearchUser(BackgroundWorker worker, User u, SQLiteConnection connection)
-        {
-            worker.ReportProgress(0, "Searching all photos");
-
-            FlickrNet.Flickr f = FlickrManager.GetFlickrAuthInstance();
-
-            FlickrNet.PhotoSearchOptions options = new FlickrNet.PhotoSearchOptions();
-            options.Extras = SearchExtras;
-            options.SortOrder = FlickrNet.PhotoSearchSortOrder.DateTakenAscending;
-            if (Settings.FilterByDate)
-            {
-                options.MinTakenDate = Settings.StartDate.Date;
-                options.MaxTakenDate = Settings.StopDate.Date + new TimeSpan(23, 59, 59);
-            }
-            options.UserId = u.UserId;
-            options.Page = 1;
-            options.PerPage = 500;
-
-            FlickrNet.PhotoCollection photoCollection;
-            do
-            {
-                if (worker.CancellationPending) // See if cancel button was pressed.
+                FlickrNet.PhotoSearchOptions options = new FlickrNet.PhotoSearchOptions();
+                options.Extras = SearchExtras;
+                options.SortOrder = FlickrNet.PhotoSearchSortOrder.DateTakenAscending;
+                if (Settings.FilterByDate)
                 {
-                    return;
+                    options.MinTakenDate = Settings.StartDate.Date;
+                    options.MaxTakenDate = Settings.StopDate.Date + new TimeSpan(23, 59, 59);
                 }
+                options.UserId = SearchAccountUser.UserId;
+                options.Page = 1;
+                options.PerPage = 500;
 
-                try
+                FlickrNet.PhotoCollection photoCollection;
+                do
                 {
+                    if (worker.CancellationPending) // See if cancel button was pressed.
+                    {
+                        return;
+                    }
+
                     photoCollection = f.PhotosSearch(options);
                     if (photoCollection.Total > 3999)
                     {
@@ -609,14 +593,14 @@ namespace FlickrMetadataDL
 
                     options.Page = photoCollection.Page + 1;
                 }
-                catch (FlickrNet.FlickrException ex)
-                {
-                    throw ex;
-                }
+                while (options.Page <= photoCollection.Pages);
             }
-            while (options.Page <= photoCollection.Pages);
+            catch (FlickrNet.FlickrException ex)
+            {
+                SearchErrorMessage = "Search failed. Error: " + ex.Message;
+                return;
+            }
         }
-
 
         // Background worker task to search selected photosets.
         private void BGSearchPhotosets(BackgroundWorker worker, DoWorkEventArgs e, SQLiteConnection connection)
