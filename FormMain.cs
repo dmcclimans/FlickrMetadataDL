@@ -35,7 +35,7 @@ namespace FlickrMetadataDL
             FlickrNet.PhotoSearchExtras.DateTaken;
 #endif
         // Error message returned from BG search methods. Empty if no error.
-        private string SearchErrorMessage { get; set; }
+        private string BGErrorMessage { get; set; }
 
         // User corresponding to Settings.FlickrSearchAccountName. This is the user
         // that is being searched.
@@ -49,7 +49,9 @@ namespace FlickrMetadataDL
 
         private bool FormIsLoaded { get; set; } = false;
 
-        private Stopwatch RunTimer { get; set; } = new Stopwatch();
+        // The number of times we will try some Flickr commands before giving up. This only applies to
+        // commands that can take a long time.
+        private const int FlickrMaxTries = 3;
 
         // Checkbox that is put in the header of the dgvPhotosets.
         private CheckBox cbHeader;
@@ -116,7 +118,8 @@ namespace FlickrMetadataDL
 
             // set up bindings
             chkSearchAllPhotos.DataBindings.Add("Checked", Settings, "SearchAllPhotos", true, DataSourceUpdateMode.OnPropertyChanged);
-            btnGetAlbums.DataBindings.Add("Enabled", Settings, "GetAlbumsEnabled");
+            btnGetAlbums.DataBindings.Add("Enabled", Settings, "GetAlbumsButtonEnabled");
+            btnSearch.DataBindings.Add("Enabled", Settings, "SearchButtonEnabled");
             chkFilterDate.DataBindings.Add("Checked", Settings, "FilterByDate", true, DataSourceUpdateMode.OnPropertyChanged);
             dateTimePickerStart.DataBindings.Add("Value", Settings, "StartDate", true, DataSourceUpdateMode.OnPropertyChanged);
             dateTimePickerStart.DataBindings.Add("Enabled", Settings, "FilterDateEnabled");
@@ -124,8 +127,6 @@ namespace FlickrMetadataDL
             dateTimePickerStop.DataBindings.Add("Enabled", Settings, "FilterDateEnabled");
             chkFindAllAlbums.DataBindings.Add("Checked", Settings, "FindAllAlbums", true, DataSourceUpdateMode.OnPropertyChanged);
             txtOutputFile.DataBindings.Add("Text", Settings, "OutputFilename");
-
-            Settings.UpdateEnabledProperties();
 
             FormIsLoaded = true;
         }
@@ -156,7 +157,7 @@ namespace FlickrMetadataDL
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            SearchErrorMessage = "";
+            BGErrorMessage = "";
 
             SearchAccountUser = (User)cbSearchAccount.SelectedItem;
             if (SearchAccountUser == null)
@@ -165,7 +166,7 @@ namespace FlickrMetadataDL
                 return;
             }
 
-            RunTimer.Start();
+            Stopwatch RunTimer = Stopwatch.StartNew();
 
             bool searchSuccessful = false;
             if (Settings.SearchAllPhotos)
@@ -180,19 +181,19 @@ namespace FlickrMetadataDL
             RunTimer.Stop();
             if (searchSuccessful)
             {
-                if (String.IsNullOrWhiteSpace(SearchErrorMessage))
+                if (String.IsNullOrWhiteSpace(BGErrorMessage))
                 {
                     MessageBox.Show(String.Format("Search found {0} photos in {1}:{2:mm}:{2:ss}.",
                         SearchPhotoCount.ToString(),
                         (int)RunTimer.Elapsed.TotalHours, RunTimer.Elapsed, RunTimer.Elapsed));
                 }
-                else if (SearchErrorMessage.Contains("Too many photos"))
+                else if (BGErrorMessage.Contains("Too many photos"))
                 {
-                    int index = SearchErrorMessage.IndexOf(":");
+                    int index = BGErrorMessage.IndexOf(":");
                     int count = 0;
                     if (index >= 0)
                     {
-                        int.TryParse(SearchErrorMessage.Substring(index + 1), out count);
+                        int.TryParse(BGErrorMessage.Substring(index + 1), out count);
                     }
                     if (Settings.SearchAllPhotos)
                     {
@@ -209,7 +210,7 @@ namespace FlickrMetadataDL
                         // filter a Photoset.GetPhotos call by date.
                         // This error message is not currently returned by my code when searching albums, so
                         // you will never see it. But there is some disabled (ifdef) code in BGSearchPhotosets
-                        // that could be enabled to return this error message.
+                        // that could be enabled to return this error.
                         MessageBox.Show("Too many photos found.\r\n\r\n" +
                             "Flickr limits the number of photos returned from a search to about 4000. " +
                             $"One of the album searches found {count} photos and the resulting photo list is not accurate.\r\n\r\n" +
@@ -218,7 +219,7 @@ namespace FlickrMetadataDL
                 }
                 else
                 {
-                    MessageBox.Show(SearchErrorMessage);
+                    MessageBox.Show(BGErrorMessage);
                 }
             }
         }
@@ -304,7 +305,7 @@ namespace FlickrMetadataDL
 
         private void btnGetAlbums_Click(object sender, EventArgs e)
         {
-            SearchErrorMessage = "";
+            BGErrorMessage = "";
 
             dgvPhotosets.Rows.Clear();
 
@@ -323,9 +324,9 @@ namespace FlickrMetadataDL
             DialogResult result = dlg.ShowDialog();
             if (result == DialogResult.OK)
             {
-                if (!String.IsNullOrWhiteSpace(SearchErrorMessage))
+                if (!String.IsNullOrWhiteSpace(BGErrorMessage))
                 {
-                    MessageBox.Show(SearchErrorMessage);
+                    MessageBox.Show(BGErrorMessage);
                 }
                 else
                 {
@@ -352,7 +353,7 @@ namespace FlickrMetadataDL
             FlickrNet.Flickr f = FlickrManager.GetFlickrAuthInstance();
             if (f == null)
             {
-                SearchErrorMessage = "You must authenticate before you can download data from Flickr.";
+                BGErrorMessage = "You must authenticate before you can download data from Flickr.";
                 return;
             }
 
@@ -364,7 +365,32 @@ namespace FlickrMetadataDL
                 FlickrNet.PhotoSearchExtras PhotosetExtras = 0;
                 do
                 {
-                    photoSets = f.PhotosetsGetList(SearchAccountUser.UserId, page, perPage, PhotosetExtras);
+                    bool success = false;
+                    for (int attempt = 0; attempt < FlickrMaxTries && !success; attempt++)
+                    {
+                        try
+                        {
+                            photoSets = f.PhotosetsGetList(SearchAccountUser.UserId, page, perPage, PhotosetExtras);
+                            success = true;
+                        }
+                        catch (FlickrNet.FlickrException ex)
+                        {
+                            // Save the *first* error message for display, not subsequent ones.
+                            if (attempt == 0)
+                                BGErrorMessage = "Album search failed. Flickr error: " + ex.Message;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (attempt == 0)
+                                BGErrorMessage = "Album search failed. Unexpected Flickr error: " + ex.Message;
+                        }
+                    }
+                    if (!success)
+                    {
+                        return;
+                    }
+                    BGErrorMessage = "";
+
                     foreach (FlickrNet.Photoset ps in photoSets)
                     {
                         PhotosetList.Add(new Photoset(ps));
@@ -377,7 +403,12 @@ namespace FlickrMetadataDL
             }
             catch (FlickrNet.FlickrException ex)
             {
-                SearchErrorMessage = "Album search failed. Error: " + ex.Message;
+                BGErrorMessage = "Album search failed. Flickr error: " + ex.Message;
+                return;
+            }
+            catch (Exception ex)
+            {
+                BGErrorMessage = "Album search failed. Unexpected error: " + ex.Message;
                 return;
             }
         }
@@ -401,7 +432,7 @@ namespace FlickrMetadataDL
             }
             catch (Exception exc)
             {
-                SearchErrorMessage = "Failed to create database.\r\nError: " + exc.Message;
+                BGErrorMessage = "Failed to create database.\r\nError: " + exc.Message;
                 return;
             }
 
@@ -434,14 +465,14 @@ namespace FlickrMetadataDL
                     }
                     catch (Exception exc)
                     {
-                        SearchErrorMessage = exc.Message;
+                        BGErrorMessage = exc.Message;
                         return;
                     }
                 }
             }
             catch (Exception exc)
             {
-                SearchErrorMessage = exc.Message;
+                BGErrorMessage = exc.Message;
                 return;
             }
         }
@@ -566,7 +597,7 @@ namespace FlickrMetadataDL
                 options.Page = 1;
                 options.PerPage = 500;
 
-                FlickrNet.PhotoCollection photoCollection;
+                FlickrNet.PhotoCollection photoCollection = null;
                 do
                 {
                     if (worker.CancellationPending) // See if cancel button was pressed.
@@ -574,12 +605,39 @@ namespace FlickrMetadataDL
                         return;
                     }
 
-                    photoCollection = f.PhotosSearch(options);
-                    if (photoCollection.Total > 3999)
+                    // Try searching Flickr up to FlickrMaxTries times
+                    bool success = false;
+                    for (int attempt = 0; attempt < FlickrMaxTries && !success; attempt++)
                     {
-                        SearchErrorMessage = $"Too many photos: {photoCollection.Total}";
+                        try
+                        {
+                            photoCollection = f.PhotosSearch(options);
+                            success = true;
+                        }
+                        catch (FlickrNet.FlickrException ex)
+                        {
+                            // Save the *first* error message for display, not subsequent ones.
+                            if (attempt == 0)
+                                BGErrorMessage = "Search failed. Flickr error: " + ex.Message;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (attempt == 0)
+                                BGErrorMessage = "Search failed. Unexpected Flickr error: " + ex.Message;
+                        }
+                    }
+                    if (!success)
+                    {
                         return;
                     }
+                    BGErrorMessage = "";
+
+                    if (photoCollection != null && photoCollection.Total > 3999)
+                    {
+                        BGErrorMessage = $"Too many photos: {photoCollection.Total}";
+                        return;
+                    }
+
                     foreach (FlickrNet.Photo flickrPhoto in photoCollection)
                     {
                         // The list of photos from flickr should contain each photo once only.
@@ -597,7 +655,12 @@ namespace FlickrMetadataDL
             }
             catch (FlickrNet.FlickrException ex)
             {
-                SearchErrorMessage = "Search failed. Error: " + ex.Message;
+                BGErrorMessage = "Search failed. Flickr error: " + ex.Message;
+                return;
+            }
+            catch (Exception ex)
+            {
+                BGErrorMessage = "Search failed. Unexpected Flickr error: " + ex.Message;
                 return;
             }
         }
@@ -652,7 +715,34 @@ namespace FlickrMetadataDL
 
                         try
                         {
-                            photoCollection = f.PhotosetsGetPhotos(photoset.PhotosetId, SearchExtras, page, perpage);
+                            // Try searching Flickr up to FlickrMaxTries times
+                            bool success = false;
+                            for (int attempt = 0; attempt < FlickrMaxTries && !success; attempt++)
+                            {
+                                try
+                                {
+                                    photoCollection = f.PhotosetsGetPhotos(photoset.PhotosetId, SearchExtras, page, perpage);
+                                    success = true;
+                                }
+                                catch (FlickrNet.FlickrException ex)
+                                {
+                                    // Save the *first* error message for display, not subsequent ones.
+                                    if (attempt == 0)
+                                        BGErrorMessage = "Search failed. Flickr error: " + ex.Message;
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Save the *first* error message for display, not subsequent ones.
+                                    if (attempt == 0)
+                                        BGErrorMessage = "Search failed. Unexpected Flickr error: " + ex.Message;
+                                }
+                            }
+                            if (!success)
+                            {
+                                return;
+                            }
+                            BGErrorMessage = "";
+
 #if false
                             // It is not clear from the documentation whether the limit of 4000 photos per search applies
                             // to album searches. If an album has more than 4000 photos, is the result of GetPhotos
@@ -681,7 +771,12 @@ namespace FlickrMetadataDL
                         }
                         catch (FlickrNet.FlickrException ex)
                         {
-                            SearchErrorMessage = "Search failed. Error: " + ex.Message;
+                            BGErrorMessage = "Search failed. Flickr error: " + ex.Message;
+                            return;
+                        }
+                        catch (Exception ex)
+                        {
+                            BGErrorMessage = "Search failed. Unexpected error: " + ex.Message;
                             return;
                         }
                     }
@@ -942,7 +1037,7 @@ namespace FlickrMetadataDL
                 FlickrNet.Flickr f = FlickrManager.GetFlickrAuthInstance();
                 if (f == null)
                 {
-                    SearchErrorMessage = "You must authenticate before you can download data from Flickr.";
+                    BGErrorMessage = "You must authenticate before you can download data from Flickr.";
                     return;
                 }
 
@@ -986,7 +1081,12 @@ namespace FlickrMetadataDL
                 }
                 catch (FlickrNet.FlickrException ex)
                 {
-                    SearchErrorMessage = "Album search failed. Error: " + ex.Message;
+                    BGErrorMessage = "Album info request failed. Error: " + ex.Message;
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    BGErrorMessage = "Album info request failed. Unexpected error: " + ex.Message;
                     return;
                 }
             }
@@ -1007,9 +1107,9 @@ namespace FlickrMetadataDL
 
             private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(SearchErrorMessage))
+            if (!String.IsNullOrWhiteSpace(BGErrorMessage))
             {
-                MessageBox.Show(SearchErrorMessage);
+                MessageBox.Show(BGErrorMessage);
             }
         }
 

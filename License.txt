@@ -1,7 +1,7 @@
 FlickrMetadataDL License Information
 ====================================
 
-2019-05-19
+2023-03-23
 
 FlickrMetadataDL is licensed under the MIT license. You may use the FlickrMetadataDL
 application in any way you like. You may copy, distribute and modify the FlickrMetadataDL
@@ -13,7 +13,7 @@ Public Domain.
 
 FlickrNet
 https://github.com/samjudson/flickr-net
-Apache License.
+Apache 2.0 License.
 
 System.Data.SQLite.Core
 https://system.data.sqlite.org/
@@ -25,7 +25,7 @@ FlickrMetadataDL License
 
 MIT License
 
-Copyright (&copy;) 2019 Don McClimans
+Copyright (&copy;) 2023 Don McClimans
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software

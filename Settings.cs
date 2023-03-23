@@ -19,30 +19,12 @@ namespace FlickrMetadataDL
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This class will persist the settings data to an XML file. It will attempt to
-    /// save the settings in the file "FlickrMetadataDLSettings.xml"
-    /// in the folder of the executable. However, if that folder is not writable by the
-    /// program (which will usually be the case if the user has installed it to a folder in
-    /// Program Files), then it will save the data to
-    /// Documents\FlickrMetadataDL\FlickrMetadataDLSettings.xml.
-    /// </para>
-    /// <para>
     /// You should create only once instance of this class. Pass this instance
     /// to any class or method that needs to access the settings.
-    /// Conceptually this class could be a static class without any instantiation. But the .net
-    /// XMLSerializer will not serialize a static class, it will only work with instances.
     /// </para>
     /// </remarks>
-    public class Settings : INotifyPropertyChanged, IChangeTracking
+    public class Settings : SimpleSettings.SettingsBase
     {
-        /// <summary>
-        /// Event raised when a property is changed.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private const string SettingsFilename = "FlickrMetadataDLSettings.xml";
-        private const string DefaultSettingsFolder = "FlickrMetadataDL";
-
         // Properties that are serialized, and trigger the PropertyChanged events.
 
         private bool filterByDateValue = false;
@@ -65,7 +47,7 @@ namespace FlickrMetadataDL
         // new User("Public"). You can't do this because the XMLSerilalizer, when it
         // deserializes a <List>, does not *replace* the list but rather *adds* to the
         // list. So you end up with multiple "Public" users in the list. Instead
-        // I handle this in the Load() method which adds the Public user when it
+        // I handle this in the SetDefaults() method which adds the Public user when it
         // does not find a file to deserialize.
         private BindingList<User> flickrLoginAccountListValue = new BindingList<User>();
         public BindingList<User> FlickrLoginAccountList
@@ -95,7 +77,7 @@ namespace FlickrMetadataDL
             set { SetProperty(ref flickrSearchAccountNameValue, value, true); }
         }
 
-        private Point formAboutLocationValue;
+       private Point formAboutLocationValue;
         public Point FormAboutLocation
         {
             get { return formAboutLocationValue; }
@@ -130,7 +112,7 @@ namespace FlickrMetadataDL
             set { SetProperty(ref formMainSizeValue, value, true); }
         }
 
-        private string outputFilenameValue = "";
+         private string outputFilenameValue = "";
         public string OutputFilename
         {
             get { return outputFilenameValue; }
@@ -159,7 +141,7 @@ namespace FlickrMetadataDL
         }
 
         // Properties which are not persisted, but trigger property changed.
-        private bool filterDateEnabledValue = true;
+        private bool filterDateEnabledValue = false;
         [XmlIgnore]
         public bool FilterDateEnabled
         {
@@ -167,193 +149,45 @@ namespace FlickrMetadataDL
             set { SetProperty(ref filterDateEnabledValue, value, true); }
         }
 
-        private bool getAlbumsEnabledValue = true;
+        private bool getAlbumsButtonEnabledValue = false;
         [XmlIgnore]
-        public bool GetAlbumsEnabled
+        public bool GetAlbumsButtonEnabled
         {
-            get { return getAlbumsEnabledValue; }
-            set { SetProperty(ref getAlbumsEnabledValue, value, true);  }
+            get { return getAlbumsButtonEnabledValue; }
+            set { SetProperty(ref getAlbumsButtonEnabledValue, value, true);  }
         }
 
-        // Class static properties.
-        // These properties are not persisted nor trigger property changed.
-        private static string _ExeFolder = "";
+        private bool searchButtonEnabledValue = false;
         [XmlIgnore]
-        public static string ExeFolder
+        public bool SearchButtonEnabled
         {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(_ExeFolder))
-                {
-                    _ExeFolder = Path.GetDirectoryName(Application.ExecutablePath);
-                }
-                return _ExeFolder;
-            }
-        }
-
-        private static string _SettingsFolder = "";
-        [XmlIgnore]
-        public static string SettingsFolder
-        {
-            get
-            {
-                if (String.IsNullOrWhiteSpace(_SettingsFolder))
-                {
-                    _SettingsFolder = Path.GetDirectoryName(Application.ExecutablePath);
-                    if (!IsFolderWritable(_SettingsFolder))
-                    {
-                        _SettingsFolder =
-                            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                        _SettingsFolder = Path.Combine(_SettingsFolder, DefaultSettingsFolder);
-                    }
-
-                }
-                return _SettingsFolder;
-            }
+            get { return searchButtonEnabledValue; }
+            set { SetProperty(ref searchButtonEnabledValue, value, true); }
         }
 
         // Methods
+        // Load, Save, and SaveIfChanged methods must be defined.
         public static Settings Load()
         {
-            string path = SettingsFolder;
-            if (path.Length > 0 && Directory.Exists(path))
-            {
-                path = Path.Combine(path, SettingsFilename);
-                if (path.Length > 0 && File.Exists(path))
-                {
-                    try
-                    {
-                        XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-                        TextReader reader = new StreamReader(path);
-
-                        Settings mySettings = (Settings)serializer.Deserialize(reader);
-                        reader.Close();
-
-                        // Success
-                        return mySettings;
-                    }
-                    catch (Exception e1)
-                    {
-                        // We failed to deserialize a Settings object
-                        string msg = "Error loading settings from " + path;
-                        msg += " -- " + e1.Message;
-                        MessageBox.Show(msg);
-                    }
-                }
-            }
-
-            // Return a default settings object, with only public login access.
-            Settings defaultSettings = new Settings();
-            defaultSettings.FlickrLoginAccountList.Add(new User("Public"));
+            return SimpleSettings.SettingsBase.Load<Settings>();
+        }
+        public bool Save()
+        {
+            return base.Save(typeof(Settings));
+        }
+        public void SaveIfChanged()
+        {
+            base.SaveIfChanged(typeof(Settings));
+        }
+        protected override void SetDefaults()
+        {
+            // Add a public option to login accounts.
+            FlickrLoginAccountList.Add(new User("Public"));
 
             // Set the Filter start and stop dates to 1 month ago through today
             DateTime today = DateTime.Now.Date;
-            defaultSettings.StartDate = today.AddMonths(-1);
-            defaultSettings.StopDate = today;
-
-            return defaultSettings;
-         }
-
-        public void SaveIfChanged()
-        {
-            if (IsChanged)
-            {
-                if (Save())
-                {
-                    AcceptChanges();
-                }
-            }
-        }
-
-        public bool Save()
-        {
-            try
-            {
-                string path = SettingsFolder;
-                // Ensure destination folder exists
-                System.IO.Directory.CreateDirectory(path);
-                path = Path.Combine(path, SettingsFilename);
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-                TextWriter writer = new StreamWriter(path);
-                serializer.Serialize(writer, this);
-                writer.Close();
-                return true;
-            }
-            catch (Exception e)
-            {
-                string msg = "Error saving settings - " + e.ToString();
-                MessageBox.Show(msg);
-                return false;
-            }
-        }
-
-        public static bool IsFolderWritable(string folderpath)
-        {
-            try
-            {
-                string filename = Guid.NewGuid().ToString() + ".txt";
-                System.IO.File.Create(folderpath + filename).Close();
-                System.IO.File.Delete(folderpath + filename);
-            }
-            catch (System.UnauthorizedAccessException)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public void UpdateEnabledProperties()
-        {
-            FilterDateEnabled = FilterByDate;
-            GetAlbumsEnabled = !SearchAllPhotos &&
-                               FlickrSearchAccountList.Count > 0 &&
-                               !String.IsNullOrWhiteSpace(FlickrSearchAccountName);
-        }
-
-        // Implementation of IChangeTracking
-        // This property is not persisted and does not trigger property changed.
-        /// <summary>
-        /// Gets the object's changed status
-        /// </summary>
-        /// <value>True if the object's content has changed since the last call to AcceptChanges().</value>
-        [XmlIgnore]
-        public bool IsChanged { get; private set; }
-
-        /// <summary>
-        /// Resets the object's state to unchanged by accepting the modifications.
-        /// </summary>
-        public void AcceptChanges()
-        {
-            IsChanged = false;
-        }
-
-        /// <summary>
-        /// Helper method to implement a property setter
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="oldValue">The backing field for the property</param>
-        /// <param name="newValue">The new value.</param>
-        /// <param name="markChanged">If true, and the property has changed, will mark the object as changed</param>
-        /// <returns>True if the property changed</returns>
-        /// <param name="propertyName">The name of the property</param>
-        /// <remarks>
-        /// If the property value has changed raises the PropertyChanged event.
-        /// Marks the property as changed only if <paramref name="markChanged"/> is true and the property value has changed.
-        /// The <paramref name="markChanged"/> parameter is normally the inverse of the XmlIgore attribute.
-        /// </remarks>
-        protected bool SetProperty<T>(ref T oldValue, T newValue, bool markChanged, [CallerMemberName] string propertyName = "")
-        {
-            //if (oldValue != null && oldValue.Equals(newValue))
-            if (oldValue != null && EqualityComparer<T>.Default.Equals(oldValue, newValue))
-                return false;
-            oldValue = newValue;
-            OnPropertyChanged(propertyName);
-            if (markChanged)
-                IsChanged = true;
-            UpdateEnabledProperties();
-            return true;
+            StartDate = today.AddMonths(-1);
+            StopDate = today;
         }
 
         // Add a new user or replace an existing user to the FlickrLoginAccountName list.
@@ -387,11 +221,10 @@ namespace FlickrMetadataDL
                 FlickrLoginAccountList.Add(newUser);
             }
 
-            OnPropertyChanged("FlickrLoginAccountList");
+            OnPropertyChanged(nameof(FlickrLoginAccountList));
             IsChanged = true;
             FlickrLoginAccountList.ResetBindings();
             FlickrLoginAccountName = newUser.UserName;
-            UpdateEnabledProperties();
         }
 
         // Remove a user in the FlickrLoginAccountName list.
@@ -407,7 +240,7 @@ namespace FlickrMetadataDL
             else
             {
                 FlickrLoginAccountList.RemoveAt(index);
-                OnPropertyChanged("FlickrLoginAccountList");
+                OnPropertyChanged(nameof(FlickrLoginAccountList));
                 IsChanged = true;
                 FlickrLoginAccountList.ResetBindings();
                 if (FlickrLoginAccountList.Count == 0)
@@ -422,7 +255,6 @@ namespace FlickrMetadataDL
                 {
                     FlickrLoginAccountName = FlickrLoginAccountList[index - 1].UserName;
                 }
-                UpdateEnabledProperties();
                 return true;
             }
         }
@@ -457,11 +289,10 @@ namespace FlickrMetadataDL
                 FlickrSearchAccountList.Add(newUser);
             }
 
-            OnPropertyChanged("FlickrSearchAccountList");
+            OnPropertyChanged(nameof(FlickrSearchAccountList));
             IsChanged = true;
             FlickrSearchAccountList.ResetBindings();
             FlickrSearchAccountName = newUser.UserName;
-            UpdateEnabledProperties();
         }
 
         // Remove a user in the FlickrLoginAccountName list.
@@ -477,7 +308,7 @@ namespace FlickrMetadataDL
             else
             {
                 FlickrSearchAccountList.RemoveAt(index);
-                OnPropertyChanged("FlickrSearchAccountList");
+                OnPropertyChanged(nameof(FlickrSearchAccountList));
                 IsChanged = true;
                 FlickrSearchAccountList.ResetBindings();
                 if (FlickrSearchAccountList.Count == 0)
@@ -492,7 +323,6 @@ namespace FlickrMetadataDL
                 {
                     FlickrSearchAccountName = FlickrSearchAccountList[index-1].UserName;
                 }
-                UpdateEnabledProperties();
     	        return true;
             }
         }
@@ -501,10 +331,29 @@ namespace FlickrMetadataDL
         /// Raise the PropertyChanged event.
         /// </summary>
         /// <param name="propertyName">Name of the property that was changed.</param>
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+            base.OnPropertyChanged(propertyName);
 
+            if (propertyName == nameof(FilterByDate))
+            {
+                FilterDateEnabled = FilterByDate;
+            }
+            if (propertyName == nameof(SearchAllPhotos) ||
+                propertyName == nameof(FlickrSearchAccountList) ||
+                propertyName == nameof(FlickrSearchAccountName))
+            {
+                GetAlbumsButtonEnabled = !SearchAllPhotos &&
+                                   FlickrSearchAccountList.Count > 0 &&
+                                   !String.IsNullOrWhiteSpace(FlickrSearchAccountName);
+            }
+            if (propertyName == nameof(FlickrSearchAccountList) ||
+                propertyName == nameof(FlickrSearchAccountName))
+            {
+                SearchButtonEnabled = (FlickrSearchAccountList.Count > 0 &&
+                                      !String.IsNullOrWhiteSpace(FlickrSearchAccountName));
+
+            }
+        }
     }
 }

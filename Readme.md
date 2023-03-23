@@ -4,9 +4,6 @@
 FlickrMetadataDL is a Windows application that can download the metadata from photos in a
 Flickr account and create an SQLite database of metadata and tags.
 
-FlickrMetadataDL was developed for use by the USA National Forest Service to generate databases
-from wildlife photos that have been tagged with species identification.
-
 ## Contents
 * [Features](#features)
 * [Requirements](#requirements)
@@ -14,6 +11,7 @@ from wildlife photos that have been tagged with species identification.
 * [Usage](#usage)
 * [Authentication](#authentication)
 * [SQLite Database](#SQLiteDatabase)
+* [Known Issues](#KnownIssues)
 * [License](#license)
 
 ## Features
@@ -21,7 +19,7 @@ from wildlife photos that have been tagged with species identification.
 * Generate a database of photo metadata for all photos visible in an account.
 
 ## Requirements
-* Requires Windows 7 or later.
+* Requires Windows 10 or later.
 
 ## Installation
 * Go to the FlickrMetadataDL
@@ -80,7 +78,7 @@ To add a **Login account**, you must "Authenticate" the FlickrMetadataDL applica
 that account. This process tells Flickr to allow FlickrMetadataDL to access the account.
 You must be logged in to the account to be able to authenticate.
 
-FlickrMetadataDL cannot make any changes to your account, since it requests only 
+FlickrMetadataDL cannot make any changes to your account, since it requests only
 **read** access to your account.
 
 To authenticate:
@@ -138,6 +136,34 @@ You can perform searches and other tasks by entering SQL commands.
 DBeaver can export to other database formats, and can export to CSV (comma-separated-variable)
 files that can be read by Excel.
 DBeaver is free and open-source.
+
+<a name="KnownIssues"></a>
+## Known Issues
+
+1. **Flickr time-out errors**
+
+    You may experience time-out or other communication errors when the program is
+    downloading data from Flickr. The program will attempt to recover from these errors by
+    retrying the commands, but this is not always successful. After 3 failed attempts the
+    program will display an error message and stop downloading.
+
+    About all you can do at this point is repeat the search to see if you can get Flickr
+    to download all of the data. In the case of a very large number of photos, you may
+    want to break the search into smaller pieces, either by using the Filter by Date Taken
+    option, or by selecting a subset of Albums. You will then end up with multiple
+    database files, which you will can combine using other database tools.
+
+2. **Settings file moved in version 2.0**
+
+    In version 2.0 the file that contains the application settings was renamed and moved.
+    If you upgrade from an earlier version you will lose your settings, which will require
+    you to re-authenticate your Flickr accounts.
+
+    To avoid losing you settings you can manually move your settings file. In versions
+    before 2.0 the settings file was named ``FlickrMetadataDLSettings.xml`` and was
+    located in the same folder as the exe file. To use this file with version 2.0 or
+    later, rename the file to ``Settings.xml``, and move or copy it to
+    ``C:\Users\<username>\AppData\Roaming\FlickrMetadataDL\``.
 
 ## License
 FlickrMetadataDL is licensed under the MIT license. You may use the FlickrMetadataDL

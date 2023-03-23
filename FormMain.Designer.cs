@@ -44,6 +44,12 @@
             this.cbSearchAccount = new System.Windows.Forms.ComboBox();
             this.btnGetAlbums = new System.Windows.Forms.Button();
             this.dgvPhotosets = new System.Windows.Forms.DataGridView();
+            this.EnableSearch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.titleDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numberOfPhotosDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bindingSourcePhotosets = new System.Windows.Forms.BindingSource(this.components);
             this.chkSearchAllPhotos = new System.Windows.Forms.CheckBox();
             this.chkFilterDate = new System.Windows.Forms.CheckBox();
             this.titleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,12 +72,6 @@
             this.photosetTitleDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.photoIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.photosetIdDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bindingSourcePhotosets = new System.Windows.Forms.BindingSource(this.components);
-            this.EnableSearch = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.titleDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.numberOfPhotosDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateCreated = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descriptionDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPhotosets)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourcePhotosets)).BeginInit();
@@ -79,12 +79,14 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(684, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
+            this.menuStrip1.Size = new System.Drawing.Size(1026, 35);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -93,13 +95,13 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(141, 34);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -108,13 +110,13 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.helpToolStripMenuItem.Text = "&Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -122,27 +124,30 @@
             // 
             this.dateTimePickerStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePickerStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerStart.Location = new System.Drawing.Point(180, 315);
+            this.dateTimePickerStart.Location = new System.Drawing.Point(262, 486);
+            this.dateTimePickerStart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateTimePickerStart.Name = "dateTimePickerStart";
-            this.dateTimePickerStart.Size = new System.Drawing.Size(100, 20);
+            this.dateTimePickerStart.Size = new System.Drawing.Size(148, 26);
             this.dateTimePickerStart.TabIndex = 15;
             // 
             // dateTimePickerStop
             // 
             this.dateTimePickerStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dateTimePickerStop.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerStop.Location = new System.Drawing.Point(341, 315);
+            this.dateTimePickerStop.Location = new System.Drawing.Point(512, 486);
+            this.dateTimePickerStop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateTimePickerStop.Name = "dateTimePickerStop";
-            this.dateTimePickerStop.Size = new System.Drawing.Size(100, 20);
+            this.dateTimePickerStop.Size = new System.Drawing.Size(148, 26);
             this.dateTimePickerStop.TabIndex = 17;
             // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(138, 318);
+            this.label3.Location = new System.Drawing.Point(203, 490);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(32, 13);
+            this.label3.Size = new System.Drawing.Size(48, 20);
             this.label3.TabIndex = 14;
             this.label3.Text = "Start:";
             // 
@@ -150,18 +155,20 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(303, 318);
+            this.label4.Location = new System.Drawing.Point(457, 491);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
+            this.label4.Size = new System.Drawing.Size(47, 20);
             this.label4.TabIndex = 16;
             this.label4.Text = "Stop:";
             // 
             // btnSearch
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSearch.Location = new System.Drawing.Point(10, 410);
+            this.btnSearch.Location = new System.Drawing.Point(15, 631);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.Size = new System.Drawing.Size(112, 35);
             this.btnSearch.TabIndex = 22;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -170,9 +177,10 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(10, 66);
+            this.label9.Location = new System.Drawing.Point(15, 102);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(124, 13);
+            this.label9.Size = new System.Drawing.Size(181, 20);
             this.label9.TabIndex = 6;
             this.label9.Text = "Flickr account to search:";
             // 
@@ -180,17 +188,19 @@
             // 
             this.cbSearchAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSearchAccount.FormattingEnabled = true;
-            this.cbSearchAccount.Location = new System.Drawing.Point(138, 63);
+            this.cbSearchAccount.Location = new System.Drawing.Point(207, 97);
+            this.cbSearchAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbSearchAccount.Name = "cbSearchAccount";
-            this.cbSearchAccount.Size = new System.Drawing.Size(375, 21);
+            this.cbSearchAccount.Size = new System.Drawing.Size(560, 28);
             this.cbSearchAccount.TabIndex = 7;
             this.cbSearchAccount.SelectedIndexChanged += new System.EventHandler(this.cbSearchAccount_SelectedIndexChanged);
             // 
             // btnGetAlbums
             // 
-            this.btnGetAlbums.Location = new System.Drawing.Point(199, 94);
+            this.btnGetAlbums.Location = new System.Drawing.Point(298, 145);
+            this.btnGetAlbums.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnGetAlbums.Name = "btnGetAlbums";
-            this.btnGetAlbums.Size = new System.Drawing.Size(75, 23);
+            this.btnGetAlbums.Size = new System.Drawing.Size(112, 35);
             this.btnGetAlbums.TabIndex = 11;
             this.btnGetAlbums.Text = "Get Albums";
             this.btnGetAlbums.UseVisualStyleBackColor = true;
@@ -213,214 +223,13 @@
             this.DateCreated,
             this.descriptionDataGridViewTextBoxColumn1});
             this.dgvPhotosets.DataSource = this.bindingSourcePhotosets;
-            this.dgvPhotosets.Location = new System.Drawing.Point(10, 126);
+            this.dgvPhotosets.Location = new System.Drawing.Point(15, 194);
+            this.dgvPhotosets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvPhotosets.Name = "dgvPhotosets";
             this.dgvPhotosets.RowHeadersVisible = false;
-            this.dgvPhotosets.Size = new System.Drawing.Size(662, 181);
+            this.dgvPhotosets.RowHeadersWidth = 62;
+            this.dgvPhotosets.Size = new System.Drawing.Size(993, 278);
             this.dgvPhotosets.TabIndex = 12;
-            // 
-            // chkSearchAllPhotos
-            // 
-            this.chkSearchAllPhotos.AutoSize = true;
-            this.chkSearchAllPhotos.Location = new System.Drawing.Point(10, 98);
-            this.chkSearchAllPhotos.Name = "chkSearchAllPhotos";
-            this.chkSearchAllPhotos.Size = new System.Drawing.Size(182, 17);
-            this.chkSearchAllPhotos.TabIndex = 10;
-            this.chkSearchAllPhotos.Text = "Search all photos (ignore albums)";
-            this.chkSearchAllPhotos.UseVisualStyleBackColor = true;
-            this.chkSearchAllPhotos.CheckedChanged += new System.EventHandler(this.chkSearchAllPhotos_CheckedChanged);
-            // 
-            // chkFilterDate
-            // 
-            this.chkFilterDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkFilterDate.AutoSize = true;
-            this.chkFilterDate.Location = new System.Drawing.Point(10, 317);
-            this.chkFilterDate.Name = "chkFilterDate";
-            this.chkFilterDate.Size = new System.Drawing.Size(89, 17);
-            this.chkFilterDate.TabIndex = 13;
-            this.chkFilterDate.Text = "Filter by date:";
-            this.chkFilterDate.UseVisualStyleBackColor = true;
-            // 
-            // titleDataGridViewTextBoxColumn
-            // 
-            this.titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
-            this.titleDataGridViewTextBoxColumn.HeaderText = "Title";
-            this.titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
-            this.titleDataGridViewTextBoxColumn.Width = 52;
-            // 
-            // descriptionDataGridViewTextBoxColumn
-            // 
-            this.descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-            this.descriptionDataGridViewTextBoxColumn.Width = 85;
-            // 
-            // dateTakenDataGridViewTextBoxColumn
-            // 
-            this.dateTakenDataGridViewTextBoxColumn.DataPropertyName = "DateTaken";
-            this.dateTakenDataGridViewTextBoxColumn.HeaderText = "DateTaken";
-            this.dateTakenDataGridViewTextBoxColumn.Name = "dateTakenDataGridViewTextBoxColumn";
-            this.dateTakenDataGridViewTextBoxColumn.Width = 86;
-            // 
-            // btnAddSearchAccount
-            // 
-            this.btnAddSearchAccount.Location = new System.Drawing.Point(520, 63);
-            this.btnAddSearchAccount.Name = "btnAddSearchAccount";
-            this.btnAddSearchAccount.Size = new System.Drawing.Size(75, 23);
-            this.btnAddSearchAccount.TabIndex = 8;
-            this.btnAddSearchAccount.Text = "Add...";
-            this.btnAddSearchAccount.UseVisualStyleBackColor = true;
-            this.btnAddSearchAccount.Click += new System.EventHandler(this.btnAddSearchAccount_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 34);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(102, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Flickr login account:";
-            // 
-            // cbLoginAccount
-            // 
-            this.cbLoginAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbLoginAccount.FormattingEnabled = true;
-            this.cbLoginAccount.Location = new System.Drawing.Point(138, 31);
-            this.cbLoginAccount.Name = "cbLoginAccount";
-            this.cbLoginAccount.Size = new System.Drawing.Size(375, 21);
-            this.cbLoginAccount.TabIndex = 3;
-            this.cbLoginAccount.SelectedIndexChanged += new System.EventHandler(this.cbLoginAccount_SelectedIndexChanged);
-            // 
-            // btnAddLoginAccount
-            // 
-            this.btnAddLoginAccount.Location = new System.Drawing.Point(519, 29);
-            this.btnAddLoginAccount.Name = "btnAddLoginAccount";
-            this.btnAddLoginAccount.Size = new System.Drawing.Size(75, 23);
-            this.btnAddLoginAccount.TabIndex = 4;
-            this.btnAddLoginAccount.Text = "Add...";
-            this.btnAddLoginAccount.UseVisualStyleBackColor = true;
-            this.btnAddLoginAccount.Click += new System.EventHandler(this.btnAddLoginAccount_Click);
-            // 
-            // btnRemoveLoginAccount
-            // 
-            this.btnRemoveLoginAccount.Location = new System.Drawing.Point(600, 29);
-            this.btnRemoveLoginAccount.Name = "btnRemoveLoginAccount";
-            this.btnRemoveLoginAccount.Size = new System.Drawing.Size(75, 23);
-            this.btnRemoveLoginAccount.TabIndex = 5;
-            this.btnRemoveLoginAccount.Text = "Remove...";
-            this.btnRemoveLoginAccount.UseVisualStyleBackColor = true;
-            this.btnRemoveLoginAccount.Click += new System.EventHandler(this.btnRemoveLoginAccount_Click);
-            // 
-            // btnRemoveSearchAccount
-            // 
-            this.btnRemoveSearchAccount.Location = new System.Drawing.Point(600, 63);
-            this.btnRemoveSearchAccount.Name = "btnRemoveSearchAccount";
-            this.btnRemoveSearchAccount.Size = new System.Drawing.Size(75, 23);
-            this.btnRemoveSearchAccount.TabIndex = 9;
-            this.btnRemoveSearchAccount.Text = "Remove...";
-            this.btnRemoveSearchAccount.UseVisualStyleBackColor = true;
-            this.btnRemoveSearchAccount.Click += new System.EventHandler(this.btnRemoveSearchAccount_Click);
-            // 
-            // label10
-            // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(10, 380);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(58, 13);
-            this.label10.TabIndex = 18;
-            this.label10.Text = "Output file:";
-            // 
-            // txtOutputFile
-            // 
-            this.txtOutputFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtOutputFile.Location = new System.Drawing.Point(138, 376);
-            this.txtOutputFile.Name = "txtOutputFile";
-            this.txtOutputFile.Size = new System.Drawing.Size(375, 20);
-            this.txtOutputFile.TabIndex = 19;
-            // 
-            // btnBrowseOutputFile
-            // 
-            this.btnBrowseOutputFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowseOutputFile.Location = new System.Drawing.Point(520, 374);
-            this.btnBrowseOutputFile.Name = "btnBrowseOutputFile";
-            this.btnBrowseOutputFile.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowseOutputFile.TabIndex = 20;
-            this.btnBrowseOutputFile.Text = "Browse...";
-            this.btnBrowseOutputFile.UseVisualStyleBackColor = true;
-            this.btnBrowseOutputFile.Click += new System.EventHandler(this.btnBrowseOutputFile_Click);
-            // 
-            // chkFindAllAlbums
-            // 
-            this.chkFindAllAlbums.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.chkFindAllAlbums.AutoSize = true;
-            this.chkFindAllAlbums.Location = new System.Drawing.Point(10, 350);
-            this.chkFindAllAlbums.Name = "chkFindAllAlbums";
-            this.chkFindAllAlbums.Size = new System.Drawing.Size(197, 17);
-            this.chkFindAllAlbums.TabIndex = 21;
-            this.chkFindAllAlbums.Text = "Find all albums for each photo (slow)";
-            this.chkFindAllAlbums.UseVisualStyleBackColor = true;
-            // 
-            // titleDataGridViewTextBoxColumn2
-            // 
-            this.titleDataGridViewTextBoxColumn2.DataPropertyName = "Title";
-            this.titleDataGridViewTextBoxColumn2.HeaderText = "Title";
-            this.titleDataGridViewTextBoxColumn2.Name = "titleDataGridViewTextBoxColumn2";
-            this.titleDataGridViewTextBoxColumn2.ReadOnly = true;
-            this.titleDataGridViewTextBoxColumn2.Width = 52;
-            // 
-            // descriptionDataGridViewTextBoxColumn2
-            // 
-            this.descriptionDataGridViewTextBoxColumn2.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn2.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn2.Name = "descriptionDataGridViewTextBoxColumn2";
-            this.descriptionDataGridViewTextBoxColumn2.ReadOnly = true;
-            this.descriptionDataGridViewTextBoxColumn2.Width = 85;
-            // 
-            // dateTakenDataGridViewTextBoxColumn1
-            // 
-            this.dateTakenDataGridViewTextBoxColumn1.DataPropertyName = "DateTaken";
-            this.dateTakenDataGridViewTextBoxColumn1.HeaderText = "Date Taken";
-            this.dateTakenDataGridViewTextBoxColumn1.Name = "dateTakenDataGridViewTextBoxColumn1";
-            this.dateTakenDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dateTakenDataGridViewTextBoxColumn1.Width = 89;
-            // 
-            // timePeriodDataGridViewTextBoxColumn
-            // 
-            this.timePeriodDataGridViewTextBoxColumn.DataPropertyName = "TimePeriod";
-            this.timePeriodDataGridViewTextBoxColumn.HeaderText = "Time of day";
-            this.timePeriodDataGridViewTextBoxColumn.Name = "timePeriodDataGridViewTextBoxColumn";
-            this.timePeriodDataGridViewTextBoxColumn.ReadOnly = true;
-            this.timePeriodDataGridViewTextBoxColumn.Width = 87;
-            // 
-            // photosetTitleDataGridViewTextBoxColumn
-            // 
-            this.photosetTitleDataGridViewTextBoxColumn.DataPropertyName = "PhotosetTitle";
-            this.photosetTitleDataGridViewTextBoxColumn.HeaderText = "Album";
-            this.photosetTitleDataGridViewTextBoxColumn.Name = "photosetTitleDataGridViewTextBoxColumn";
-            this.photosetTitleDataGridViewTextBoxColumn.ReadOnly = true;
-            this.photosetTitleDataGridViewTextBoxColumn.Width = 61;
-            // 
-            // photoIdDataGridViewTextBoxColumn
-            // 
-            this.photoIdDataGridViewTextBoxColumn.DataPropertyName = "PhotoId";
-            this.photoIdDataGridViewTextBoxColumn.HeaderText = "Photo ID";
-            this.photoIdDataGridViewTextBoxColumn.Name = "photoIdDataGridViewTextBoxColumn";
-            this.photoIdDataGridViewTextBoxColumn.ReadOnly = true;
-            this.photoIdDataGridViewTextBoxColumn.Width = 74;
-            // 
-            // photosetIdDataGridViewTextBoxColumn1
-            // 
-            this.photosetIdDataGridViewTextBoxColumn1.DataPropertyName = "PhotosetId";
-            this.photosetIdDataGridViewTextBoxColumn1.HeaderText = "Album ID";
-            this.photosetIdDataGridViewTextBoxColumn1.Name = "photosetIdDataGridViewTextBoxColumn1";
-            this.photosetIdDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.photosetIdDataGridViewTextBoxColumn1.Width = 75;
-            // 
-            // bindingSourcePhotosets
-            // 
-            this.bindingSourcePhotosets.DataSource = typeof(FlickrMetadataDL.Photoset);
             // 
             // EnableSearch
             // 
@@ -434,9 +243,10 @@
             // 
             this.titleDataGridViewTextBoxColumn1.DataPropertyName = "Title";
             this.titleDataGridViewTextBoxColumn1.HeaderText = "Title";
+            this.titleDataGridViewTextBoxColumn1.MinimumWidth = 8;
             this.titleDataGridViewTextBoxColumn1.Name = "titleDataGridViewTextBoxColumn1";
             this.titleDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.titleDataGridViewTextBoxColumn1.Width = 52;
+            this.titleDataGridViewTextBoxColumn1.Width = 74;
             // 
             // numberOfPhotosDataGridViewTextBoxColumn
             // 
@@ -444,31 +254,259 @@
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.numberOfPhotosDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.numberOfPhotosDataGridViewTextBoxColumn.HeaderText = "Count";
+            this.numberOfPhotosDataGridViewTextBoxColumn.MinimumWidth = 8;
             this.numberOfPhotosDataGridViewTextBoxColumn.Name = "numberOfPhotosDataGridViewTextBoxColumn";
             this.numberOfPhotosDataGridViewTextBoxColumn.ReadOnly = true;
-            this.numberOfPhotosDataGridViewTextBoxColumn.Width = 60;
+            this.numberOfPhotosDataGridViewTextBoxColumn.Width = 88;
             // 
             // DateCreated
             // 
             this.DateCreated.DataPropertyName = "DateCreated";
             this.DateCreated.HeaderText = "Date Created";
+            this.DateCreated.MinimumWidth = 8;
             this.DateCreated.Name = "DateCreated";
             this.DateCreated.ReadOnly = true;
-            this.DateCreated.Width = 95;
+            this.DateCreated.Width = 141;
             // 
             // descriptionDataGridViewTextBoxColumn1
             // 
             this.descriptionDataGridViewTextBoxColumn1.DataPropertyName = "Description";
             this.descriptionDataGridViewTextBoxColumn1.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn1.MinimumWidth = 8;
             this.descriptionDataGridViewTextBoxColumn1.Name = "descriptionDataGridViewTextBoxColumn1";
             this.descriptionDataGridViewTextBoxColumn1.ReadOnly = true;
-            this.descriptionDataGridViewTextBoxColumn1.Width = 85;
+            this.descriptionDataGridViewTextBoxColumn1.Width = 125;
+            // 
+            // bindingSourcePhotosets
+            // 
+            this.bindingSourcePhotosets.DataSource = typeof(FlickrMetadataDL.Photoset);
+            // 
+            // chkSearchAllPhotos
+            // 
+            this.chkSearchAllPhotos.AutoSize = true;
+            this.chkSearchAllPhotos.Location = new System.Drawing.Point(15, 151);
+            this.chkSearchAllPhotos.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkSearchAllPhotos.Name = "chkSearchAllPhotos";
+            this.chkSearchAllPhotos.Size = new System.Drawing.Size(271, 24);
+            this.chkSearchAllPhotos.TabIndex = 10;
+            this.chkSearchAllPhotos.Text = "Search all photos (ignore albums)";
+            this.chkSearchAllPhotos.UseVisualStyleBackColor = true;
+            this.chkSearchAllPhotos.CheckedChanged += new System.EventHandler(this.chkSearchAllPhotos_CheckedChanged);
+            // 
+            // chkFilterDate
+            // 
+            this.chkFilterDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkFilterDate.AutoSize = true;
+            this.chkFilterDate.Location = new System.Drawing.Point(15, 490);
+            this.chkFilterDate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkFilterDate.Name = "chkFilterDate";
+            this.chkFilterDate.Size = new System.Drawing.Size(174, 24);
+            this.chkFilterDate.TabIndex = 13;
+            this.chkFilterDate.Text = "Filter by date taken:";
+            this.chkFilterDate.UseVisualStyleBackColor = true;
+            // 
+            // titleDataGridViewTextBoxColumn
+            // 
+            this.titleDataGridViewTextBoxColumn.DataPropertyName = "Title";
+            this.titleDataGridViewTextBoxColumn.HeaderText = "Title";
+            this.titleDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.titleDataGridViewTextBoxColumn.Name = "titleDataGridViewTextBoxColumn";
+            this.titleDataGridViewTextBoxColumn.Width = 52;
+            // 
+            // descriptionDataGridViewTextBoxColumn
+            // 
+            this.descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
+            this.descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+            this.descriptionDataGridViewTextBoxColumn.Width = 85;
+            // 
+            // dateTakenDataGridViewTextBoxColumn
+            // 
+            this.dateTakenDataGridViewTextBoxColumn.DataPropertyName = "DateTaken";
+            this.dateTakenDataGridViewTextBoxColumn.HeaderText = "DateTaken";
+            this.dateTakenDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.dateTakenDataGridViewTextBoxColumn.Name = "dateTakenDataGridViewTextBoxColumn";
+            this.dateTakenDataGridViewTextBoxColumn.Width = 86;
+            // 
+            // btnAddSearchAccount
+            // 
+            this.btnAddSearchAccount.Location = new System.Drawing.Point(780, 97);
+            this.btnAddSearchAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAddSearchAccount.Name = "btnAddSearchAccount";
+            this.btnAddSearchAccount.Size = new System.Drawing.Size(112, 35);
+            this.btnAddSearchAccount.TabIndex = 8;
+            this.btnAddSearchAccount.Text = "Add...";
+            this.btnAddSearchAccount.UseVisualStyleBackColor = true;
+            this.btnAddSearchAccount.Click += new System.EventHandler(this.btnAddSearchAccount_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 52);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(148, 20);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Flickr login account:";
+            // 
+            // cbLoginAccount
+            // 
+            this.cbLoginAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLoginAccount.FormattingEnabled = true;
+            this.cbLoginAccount.Location = new System.Drawing.Point(207, 48);
+            this.cbLoginAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cbLoginAccount.Name = "cbLoginAccount";
+            this.cbLoginAccount.Size = new System.Drawing.Size(560, 28);
+            this.cbLoginAccount.TabIndex = 3;
+            this.cbLoginAccount.SelectedIndexChanged += new System.EventHandler(this.cbLoginAccount_SelectedIndexChanged);
+            // 
+            // btnAddLoginAccount
+            // 
+            this.btnAddLoginAccount.Location = new System.Drawing.Point(778, 45);
+            this.btnAddLoginAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnAddLoginAccount.Name = "btnAddLoginAccount";
+            this.btnAddLoginAccount.Size = new System.Drawing.Size(112, 35);
+            this.btnAddLoginAccount.TabIndex = 4;
+            this.btnAddLoginAccount.Text = "Add...";
+            this.btnAddLoginAccount.UseVisualStyleBackColor = true;
+            this.btnAddLoginAccount.Click += new System.EventHandler(this.btnAddLoginAccount_Click);
+            // 
+            // btnRemoveLoginAccount
+            // 
+            this.btnRemoveLoginAccount.Location = new System.Drawing.Point(900, 45);
+            this.btnRemoveLoginAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnRemoveLoginAccount.Name = "btnRemoveLoginAccount";
+            this.btnRemoveLoginAccount.Size = new System.Drawing.Size(112, 35);
+            this.btnRemoveLoginAccount.TabIndex = 5;
+            this.btnRemoveLoginAccount.Text = "Remove...";
+            this.btnRemoveLoginAccount.UseVisualStyleBackColor = true;
+            this.btnRemoveLoginAccount.Click += new System.EventHandler(this.btnRemoveLoginAccount_Click);
+            // 
+            // btnRemoveSearchAccount
+            // 
+            this.btnRemoveSearchAccount.Location = new System.Drawing.Point(900, 97);
+            this.btnRemoveSearchAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnRemoveSearchAccount.Name = "btnRemoveSearchAccount";
+            this.btnRemoveSearchAccount.Size = new System.Drawing.Size(112, 35);
+            this.btnRemoveSearchAccount.TabIndex = 9;
+            this.btnRemoveSearchAccount.Text = "Remove...";
+            this.btnRemoveSearchAccount.UseVisualStyleBackColor = true;
+            this.btnRemoveSearchAccount.Click += new System.EventHandler(this.btnRemoveSearchAccount_Click);
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(15, 585);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(86, 20);
+            this.label10.TabIndex = 18;
+            this.label10.Text = "Output file:";
+            // 
+            // txtOutputFile
+            // 
+            this.txtOutputFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOutputFile.Location = new System.Drawing.Point(207, 578);
+            this.txtOutputFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtOutputFile.Name = "txtOutputFile";
+            this.txtOutputFile.Size = new System.Drawing.Size(560, 26);
+            this.txtOutputFile.TabIndex = 19;
+            // 
+            // btnBrowseOutputFile
+            // 
+            this.btnBrowseOutputFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBrowseOutputFile.Location = new System.Drawing.Point(780, 575);
+            this.btnBrowseOutputFile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnBrowseOutputFile.Name = "btnBrowseOutputFile";
+            this.btnBrowseOutputFile.Size = new System.Drawing.Size(112, 35);
+            this.btnBrowseOutputFile.TabIndex = 20;
+            this.btnBrowseOutputFile.Text = "Browse...";
+            this.btnBrowseOutputFile.UseVisualStyleBackColor = true;
+            this.btnBrowseOutputFile.Click += new System.EventHandler(this.btnBrowseOutputFile_Click);
+            // 
+            // chkFindAllAlbums
+            // 
+            this.chkFindAllAlbums.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkFindAllAlbums.AutoSize = true;
+            this.chkFindAllAlbums.Location = new System.Drawing.Point(15, 540);
+            this.chkFindAllAlbums.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkFindAllAlbums.Name = "chkFindAllAlbums";
+            this.chkFindAllAlbums.Size = new System.Drawing.Size(292, 24);
+            this.chkFindAllAlbums.TabIndex = 21;
+            this.chkFindAllAlbums.Text = "Find all albums for each photo (slow)";
+            this.chkFindAllAlbums.UseVisualStyleBackColor = true;
+            // 
+            // titleDataGridViewTextBoxColumn2
+            // 
+            this.titleDataGridViewTextBoxColumn2.DataPropertyName = "Title";
+            this.titleDataGridViewTextBoxColumn2.HeaderText = "Title";
+            this.titleDataGridViewTextBoxColumn2.MinimumWidth = 8;
+            this.titleDataGridViewTextBoxColumn2.Name = "titleDataGridViewTextBoxColumn2";
+            this.titleDataGridViewTextBoxColumn2.ReadOnly = true;
+            this.titleDataGridViewTextBoxColumn2.Width = 52;
+            // 
+            // descriptionDataGridViewTextBoxColumn2
+            // 
+            this.descriptionDataGridViewTextBoxColumn2.DataPropertyName = "Description";
+            this.descriptionDataGridViewTextBoxColumn2.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn2.MinimumWidth = 8;
+            this.descriptionDataGridViewTextBoxColumn2.Name = "descriptionDataGridViewTextBoxColumn2";
+            this.descriptionDataGridViewTextBoxColumn2.ReadOnly = true;
+            this.descriptionDataGridViewTextBoxColumn2.Width = 85;
+            // 
+            // dateTakenDataGridViewTextBoxColumn1
+            // 
+            this.dateTakenDataGridViewTextBoxColumn1.DataPropertyName = "DateTaken";
+            this.dateTakenDataGridViewTextBoxColumn1.HeaderText = "Date Taken";
+            this.dateTakenDataGridViewTextBoxColumn1.MinimumWidth = 8;
+            this.dateTakenDataGridViewTextBoxColumn1.Name = "dateTakenDataGridViewTextBoxColumn1";
+            this.dateTakenDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dateTakenDataGridViewTextBoxColumn1.Width = 89;
+            // 
+            // timePeriodDataGridViewTextBoxColumn
+            // 
+            this.timePeriodDataGridViewTextBoxColumn.DataPropertyName = "TimePeriod";
+            this.timePeriodDataGridViewTextBoxColumn.HeaderText = "Time of day";
+            this.timePeriodDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.timePeriodDataGridViewTextBoxColumn.Name = "timePeriodDataGridViewTextBoxColumn";
+            this.timePeriodDataGridViewTextBoxColumn.ReadOnly = true;
+            this.timePeriodDataGridViewTextBoxColumn.Width = 87;
+            // 
+            // photosetTitleDataGridViewTextBoxColumn
+            // 
+            this.photosetTitleDataGridViewTextBoxColumn.DataPropertyName = "PhotosetTitle";
+            this.photosetTitleDataGridViewTextBoxColumn.HeaderText = "Album";
+            this.photosetTitleDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.photosetTitleDataGridViewTextBoxColumn.Name = "photosetTitleDataGridViewTextBoxColumn";
+            this.photosetTitleDataGridViewTextBoxColumn.ReadOnly = true;
+            this.photosetTitleDataGridViewTextBoxColumn.Width = 61;
+            // 
+            // photoIdDataGridViewTextBoxColumn
+            // 
+            this.photoIdDataGridViewTextBoxColumn.DataPropertyName = "PhotoId";
+            this.photoIdDataGridViewTextBoxColumn.HeaderText = "Photo ID";
+            this.photoIdDataGridViewTextBoxColumn.MinimumWidth = 8;
+            this.photoIdDataGridViewTextBoxColumn.Name = "photoIdDataGridViewTextBoxColumn";
+            this.photoIdDataGridViewTextBoxColumn.ReadOnly = true;
+            this.photoIdDataGridViewTextBoxColumn.Width = 74;
+            // 
+            // photosetIdDataGridViewTextBoxColumn1
+            // 
+            this.photosetIdDataGridViewTextBoxColumn1.DataPropertyName = "PhotosetId";
+            this.photosetIdDataGridViewTextBoxColumn1.HeaderText = "Album ID";
+            this.photosetIdDataGridViewTextBoxColumn1.MinimumWidth = 8;
+            this.photosetIdDataGridViewTextBoxColumn1.Name = "photosetIdDataGridViewTextBoxColumn1";
+            this.photosetIdDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.photosetIdDataGridViewTextBoxColumn1.Width = 75;
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 442);
+            this.ClientSize = new System.Drawing.Size(1026, 680);
             this.Controls.Add(this.chkFindAllAlbums);
             this.Controls.Add(this.btnBrowseOutputFile);
             this.Controls.Add(this.txtOutputFile);
@@ -492,7 +530,8 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.dgvPhotosets);
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(700, 480);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MinimumSize = new System.Drawing.Size(1039, 708);
             this.Name = "FormMain";
             this.Text = "FlickrMetadataDL";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);

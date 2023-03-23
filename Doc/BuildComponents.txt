@@ -1,9 +1,7 @@
-FlickrMetadataDL Version    1.2
-    Visual Studio 2019      16.4.3
+FlickrMetadataDL Version    2.0     2023-03-23
+    Visual Studio 2022      17.5.1
     FlickrNet               3.26.0
-    System.Data.SQlite.Core 1.0.112
-    Pandoc                  2.9.1
-    Miktex                  2.9.7206
+    System.Data.SQlite.Core 1.0.117
 
 
 
